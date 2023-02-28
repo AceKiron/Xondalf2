@@ -8,7 +8,5 @@ export default async (client: Client, commandsArray: Array<CommandInterface>, in
     let command = commandsArray.find(command => command.name === interaction.commandName);
     if (!command) return;
 
-    await interaction.deferReply();
-
     command.executor(interaction, client);
 }

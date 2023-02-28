@@ -62,7 +62,7 @@ export default async (client: Client, commandsArray: Array<CommandInterface>): P
             if (channel.nsfw) embed = nsfwEmbeds[Math.floor(Math.random() * nsfwEmbeds.length)];
             else embed = sfwEmbeds[Math.floor(Math.random() * sfwEmbeds.length)];
 
-            interaction.editReply({ embeds: [ embed ]});
+            interaction.reply({ embeds: [ embed ]});
         }
     });
 }
