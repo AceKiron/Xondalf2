@@ -1,4 +1,4 @@
-import { Client, GatewayIntentBits } from "discord.js";
+import { Client, GatewayIntentBits, ActivityType  } from "discord.js";
 
 import CommandInterface from "./Interfaces/CommandInterface";
 
@@ -24,11 +24,22 @@ commandsFiles.forEach(async (filename: string): Promise<void> => {
 
     if (commandsLoaded === commandsCount) {
         (await import("./Utils/ReloadSlashCommands")).default(commandsArray);
-
+      
         client.on("ready", (): void => {
+            setInterval((): void => {
+                client.user?.setPresence({
+                    activities: [{ name: `in ${client.guilds.cache.size} servers!`, type: ActivityType.Playing }],
+                    status: "online"
+                });
+            }, 1000 * 60);
+            client.user?.setPresence({
+                activities: [{ name: `in ${client.guilds.cache.size} servers!`, type: ActivityType.Playing }],
+                status: "online"
+            });
+          
             Fs.readdirSync(Path.join(__dirname, "Handlers")).forEach(async (filename: string): Promise<void> => {
                 const handler = (await import("./Handlers/" + filename)).default;
-
+              
                 client.on(filename.split(".")[0], async (...args): Promise<void> => {
                     handler(client, commandsArray, ...args);
                 });
