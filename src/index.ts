@@ -4,6 +4,8 @@ import CommandInterface from "./Interfaces/CommandInterface";
 
 import Fs from "fs";
 import Path from "path";
+import Express from "express";
+import Cors from "cors";
 
 import "dotenv/config";
 
@@ -39,4 +41,20 @@ commandsFiles.forEach(async (filename: string): Promise<void> => {
 
         client.login(process.env.DISCORD_TOKEN);
     }
+});
+
+const app: Express.Application = Express();
+
+app.use(Cors({
+    origin: (origin: any, callback: any) => {
+        callback(null, true);
+    }
+}));
+
+app.get("/", (req: Express.Request, res: Express.Response): void => {
+    res.sendStatus(200);
+});
+
+app.listen(process.env.PORT || 8080, () => {
+    console.log(`Listening on port ${process.env.PORT || 8080}.`);
 });
