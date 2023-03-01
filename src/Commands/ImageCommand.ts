@@ -32,6 +32,7 @@ async function updatePartial(nsfw: boolean): Promise<void> {
                 .setURL(post.link)
                 .setTimestamp(post.created_utc * 1000)
                 .setImage(images[j])
+                .setColor("#ff00ff")
             );
         }
     }
@@ -62,7 +63,9 @@ export default async (client: Client, commandsArray: Array<CommandInterface>): P
             if (channel.nsfw) embed = nsfwEmbeds[Math.floor(Math.random() * nsfwEmbeds.length)];
             else embed = sfwEmbeds[Math.floor(Math.random() * sfwEmbeds.length)];
 
-            interaction.reply({ embeds: [ embed ]});
+            await interaction.reply({ embeds: [ embed ]});
+
+            update();
         }
     });
 }
