@@ -12,6 +12,8 @@ let nsfwEmbeds: Array<EmbedBuilder> = [];
 let lastUpdated: number = 0;
 
 async function updatePartial(nsfw: boolean): Promise<void> {
+    let newEmbeds: Array<EmbedBuilder> = [];
+  
     let payload = "?minImages=1&flair=Just Showing Off 😍" + (nsfw ? "&nsfw=1" : "");
     
     const count = (await Axios.get("https://axolotlapi.kirondevcoder.repl.co/reddit/count" + payload)).data.data;
@@ -19,15 +21,15 @@ async function updatePartial(nsfw: boolean): Promise<void> {
     
     const posts = (await Axios.get("https://axolotlapi.kirondevcoder.repl.co/reddit" + payload)).data.data;;
 
-    const list: Array<EmbedBuilder> = nsfw ? nsfwEmbeds : sfwEmbeds;
-
     for (let i = 0; i < count; i++) {
-        console.log(posts[i]);
         const post: EntryInterface = posts[i];
+
+        if (!post) console.log(posts[i]);
+        
         const images: Array<string> = post.media.filter((m: MediaInterface) => m.kind === "image").map((m: MediaInterface) => m.url);
 
         for (let j = 0; j < images.length; j++) {
-            list.push(new EmbedBuilder()
+            newEmbeds.push(new EmbedBuilder()
                 .setTitle(post.title)
                 .setAuthor({ name: `u/${post.author}`, url: `https://reddit.com/u/${post.author}` })
                 .setURL(post.link)
@@ -37,6 +39,9 @@ async function updatePartial(nsfw: boolean): Promise<void> {
             );
         }
     }
+
+    if (nsfw) nsfwEmbeds = newEmbeds;
+    else sfwEmbeds = newEmbeds;
 }
 
 function isAllowedToUpdate(): boolean {
@@ -47,8 +52,8 @@ async function update(): Promise<void> {
     if (!isAllowedToUpdate()) return;
     lastUpdated = Date.now();
 
-    updatePartial(false);
-    updatePartial(true);
+    await updatePartial(false);
+    await updatePartial(true);
 }
 
 export default async (client: Client, commandsArray: Array<CommandInterface>): Promise<void> => {
