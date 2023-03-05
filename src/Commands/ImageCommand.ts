@@ -42,6 +42,8 @@ async function updatePartial(nsfw: boolean): Promise<void> {
 
     if (nsfw) nsfwEmbeds = newEmbeds;
     else sfwEmbeds = newEmbeds;
+
+    console.log("Updated images");
 }
 
 function isAllowedToUpdate(): boolean {
