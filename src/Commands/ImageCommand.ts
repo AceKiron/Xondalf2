@@ -22,6 +22,7 @@ async function updatePartial(nsfw: boolean): Promise<void> {
     const list: Array<EmbedBuilder> = nsfw ? nsfwEmbeds : sfwEmbeds;
 
     for (let i = 0; i < count; i++) {
+        console.log(posts[i]);
         const post: EntryInterface = posts[i];
         const images: Array<string> = post.media.filter((m: MediaInterface) => m.kind === "image").map((m: MediaInterface) => m.url);
 
