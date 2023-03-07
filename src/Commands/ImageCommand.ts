@@ -36,14 +36,13 @@ async function updatePartial(nsfw: boolean): Promise<void> {
                 .setTimestamp(post.created_utc * 1000)
                 .setImage(images[j])
                 .setColor("#ff00ff")
+                .setDescription("Score: " + post.score)
             );
         }
     }
 
     if (nsfw) nsfwEmbeds = newEmbeds;
     else sfwEmbeds = newEmbeds;
-
-    console.log("Updated images");
 }
 
 function isAllowedToUpdate(): boolean {
@@ -56,6 +55,8 @@ async function update(): Promise<void> {
 
     await updatePartial(false);
     await updatePartial(true);
+
+    console.log("Updated images");
 }
 
 export default async (client: Client, commandsArray: Array<CommandInterface>): Promise<void> => {
