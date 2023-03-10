@@ -14,18 +14,15 @@ let lastUpdated: number = 0;
 async function updatePartial(nsfw: boolean): Promise<void> {
     let newEmbeds: Array<EmbedBuilder> = [];
   
-    let payload = "?minImages=1&flair=Just Showing Off 😍" + (nsfw ? "&nsfw=1" : "");
+    let payload = "?count=50&minImages=1&flair=Just Showing Off 😍" + (nsfw ? "&nsfw=1" : "");
     
-    const count = (await Axios.get("https://axolotlapi.kirondevcoder.repl.co/reddit/count" + payload)).data.data;
-    payload += `&count=${count}`;
-    
-    const posts = (await Axios.get("https://axolotlapi.kirondevcoder.repl.co/reddit" + payload)).data.data;;
+    const posts = (await Axios.get("https://axolotlapi.kirondevcoder.repl.co/reddit" + payload)).data.data;
 
-    for (let i = 0; i < count; i++) {
+    console.log((nsfw ? "NSFW " : "") + `posts loaded (length=${posts.length})`);
+
+    for (let i = 0; i < posts.length; i++) {
         const post: EntryInterface = posts[i];
 
-        if (!post) console.log(posts[i]);
-        
         const images: Array<string> = post.media.filter((m: MediaInterface) => m.kind === "image").map((m: MediaInterface) => m.url);
 
         for (let j = 0; j < images.length; j++) {
