@@ -1,4 +1,4 @@
-import { Client, GatewayIntentBits, ActivityType  } from "discord.js";
+import { Client, GatewayIntentBits, ActivityType } from "discord.js";
 
 import CommandInterface from "./Interfaces/CommandInterface";
 
@@ -26,12 +26,6 @@ commandsFiles.forEach(async (filename: string): Promise<void> => {
         (await import("./Utils/ReloadSlashCommands")).default(commandsArray);
       
         client.on("ready", (): void => {
-            setInterval((): void => {
-                client.user?.setPresence({
-                    activities: [{ name: `in ${client.guilds.cache.size} servers!`, type: ActivityType.Playing }],
-                    status: "online"
-                });
-            }, 1000 * 60);
             client.user?.setPresence({
                 activities: [{ name: `in ${client.guilds.cache.size} servers!`, type: ActivityType.Playing }],
                 status: "online"
