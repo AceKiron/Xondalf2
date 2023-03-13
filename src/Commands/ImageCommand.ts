@@ -69,7 +69,8 @@ export default async (client: Client, commandsArray: Array<CommandInterface>): P
             if (channel.nsfw) embed = nsfwEmbeds[Math.floor(Math.random() * nsfwEmbeds.length)];
             else embed = sfwEmbeds[Math.floor(Math.random() * sfwEmbeds.length)];
 
-            await interaction.reply({ embeds: [ embed ]});
+            if (!embed) await interaction.reply("No images available at this moment, sorry!");
+            else await interaction.reply({ embeds: [ embed ]});
 
             update();
         }
